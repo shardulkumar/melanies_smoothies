@@ -27,7 +27,7 @@ df_fruit_options = session \
 
 pd_df = df_fruit_options.to_pandas()
 st.dataframe(pd_df)
-st.stop()
+# st.stop()
 
 ingredient_list = st.multiselect(
       "Choose up to 5 ingredients:"

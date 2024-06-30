@@ -32,7 +32,7 @@ ingredient_list = st.multiselect(
 )
 
 pd_df = df_fruit_options.to_pandas()
-st.dataframe(pd_df)
+# st.dataframe(pd_df)
 # st.stop()
 
 if ingredient_list:    

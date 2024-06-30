@@ -25,15 +25,15 @@ df_fruit_options = session \
     .table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS") \
     .select(col("fruit_name"), col("search_on"))
 
-pd_df = df_fruit_options.to_pandas()
-st.dataframe(pd_df)
-# st.stop()
-
 ingredient_list = st.multiselect(
       "Choose up to 5 ingredients:"
     , df_fruit_options
     , max_selections=5
 )
+
+pd_df = df_fruit_options.to_pandas()
+st.dataframe(pd_df)
+# st.stop()
 
 if ingredient_list:    
     ingredients_string = ""

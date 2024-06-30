@@ -2,6 +2,7 @@
 import streamlit as st
 from snowflake.snowpark.functions import col
 import requests
+import pandas as pd
 
 
 # Write directly to the app
@@ -24,8 +25,8 @@ df_fruit_options = session \
     .table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS") \
     .select(col("fruit_name"), col("search_on"))
 
-# use the dataframe from fruit_options table to feed into the streamlit app
-st.dataframe(data=df_fruit_options, use_container_width=True)
+pd_df = df_fruit_options.to_pandas()
+st.dataframe(pd_df)
 st.stop()
 
 ingredient_list = st.multiselect(
@@ -38,16 +39,16 @@ if ingredient_list:
     ingredients_string = ""
     for fruit_chosen in ingredient_list:
         ingredients_string += fruit_chosen + " "
+
+        search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
+        st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
+
         fruityvice_response = requests.get(f"https://fruityvice.com/api/fruit/{fruit_chosen}")
         fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
-
-    # st.text(ingredients_string)
 
     my_insert_stmt = """
         insert into smoothies.public.orders(ingredients, name_on_order)
         values ('""" + ingredients_string + """', '""" + name_on_order + """')"""
-    # st.write(my_insert_stmt)
-    # st.stop()
 
     time_to_insert = st.button("Submit Order")
 

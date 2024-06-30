@@ -22,7 +22,7 @@ session = cnx.session()
 # get the data from fruit_options table into a dataframe
 df_fruit_options = session \
     .table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS") \
-    .select(col("fruit_name"), col("search_on")
+    .select(col("fruit_name"), col("search_on"))
 
 # use the dataframe from fruit_options table to feed into the streamlit app
 st.dataframe(data=df_fruit_options, use_container_width=True)
